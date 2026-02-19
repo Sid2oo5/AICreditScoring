@@ -1,0 +1,44 @@
+CREATE DATABASE IF NOT EXISTS MultiPillarCreditDB;
+USE MultiPillarCreditDB;
+
+CREATE TABLE tbl_applicants (
+    applicant_id INT AUTO_INCREMENT PRIMARY KEY,
+    utilization_ratio DECIMAL(10, 4),
+    debt_to_income DECIMAL(10, 4),
+    credit_history_score TINYINT,
+    loan_duration INT,
+    age INT,
+    is_unbanked BOOLEAN,
+    applicant_type ENUM('Individual', 'MSME', 'E-Commerce'),
+    default_status TINYINT(1)
+);
+
+CREATE TABLE tbl_msme_attributes (
+    msme_id INT AUTO_INCREMENT PRIMARY KEY,
+    applicant_id INT,
+    inventory_turnover_ratio DECIMAL(10, 2),
+    customer_refund_rate DECIMAL(10, 4),
+    stockout_frequency INT,
+    sales_growth_velocity DECIMAL(10, 4),
+    supplier_payment_delay INT,
+    FOREIGN KEY (applicant_id) REFERENCES tbl_applicants(applicant_id)
+);
+
+CREATE TABLE tbl_ecommerce_attributes (
+    eco_id INT AUTO_INCREMENT PRIMARY KEY,
+    applicant_id INT,
+    essential_basket_index DECIMAL(10, 4),
+    order_regularity_score DECIMAL(10, 4),
+    bnpl_repayment_speed DECIMAL(10, 2),
+    cancelled_order_ratio DECIMAL(10, 4),
+    FOREIGN KEY (applicant_id) REFERENCES tbl_applicants(applicant_id)
+);
+
+CREATE TABLE tbl_individual_attributes (
+    ind_id INT AUTO_INCREMENT PRIMARY KEY,
+    applicant_id INT,
+    recharge_buffer INT,
+    emergency_fund_idx DECIMAL(10, 4),
+    ott_sub_freq DECIMAL(10, 2),
+    FOREIGN KEY (applicant_id) REFERENCES tbl_applicants(applicant_id)
+);
